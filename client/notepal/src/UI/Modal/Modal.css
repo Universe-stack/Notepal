@@ -1,0 +1,31 @@
+.Modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
+    z-index: 101;
+    background-color: #FFFFFF;
+    position: absolute;
+    padding: 1rem 0;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    
+}
+
+.btn_Close{
+    align-self: flex-end;
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+    justify-self: flex-end;
+}
+.Open {
+    display: inline-flex;
+    flex-direction: column;
+    
+}
+
+.Close {
+    display: none;
+   
+}
