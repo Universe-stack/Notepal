@@ -18,6 +18,7 @@ const afterEffects=()=>{
     else if(error){
         return <p>{error.message}</p>
     }else{
+      console.log(error)
       return <p>Please refresh this page!</p>
     }
 }
@@ -48,4 +49,4 @@ const afterEffects=()=>{
   )
 }
 
-export default AllNotes
+export default AllNotes;

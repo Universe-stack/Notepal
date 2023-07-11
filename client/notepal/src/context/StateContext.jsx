@@ -7,7 +7,7 @@ export const StateContextProvider = ({children}) => {
 
   const [note, setNote] = useState([]);
   const [notes, setNotes] = useState([]);
-  const [error, setError] = useState(false)
+  const [error, setError] = useState()
   console.log(note)
 
   const addNote=(product)=>{
@@ -18,11 +18,10 @@ export const StateContextProvider = ({children}) => {
     // get from the server-side
     try {
       const response = await axios.get('http://localhost:8800/notes/');
-      // Form data received
       setNotes(response.data);
-      
-    } catch (error) {
-      error?setError(true,error):
+
+    } catch(error) {
+      setError(error)
       console.error(error);
     }
 };

@@ -3,11 +3,12 @@ import * as Form from '@radix-ui/react-form';
 import './FormItem.css';
 import MyContext  from '../../context/StateContext';
 import axios from "axios";
+import DateInput from '../Datepicker/DatePicker';
 
 
-const FormItem = () => {
+const FormItem = (props) => {
 
-  const [formData, setFormData] = useState({title: "", message:""});
+  const [formData, setFormData] = useState({title: "", message:"",date:"", dateSubmit:""});
   const {note, setNote} = useContext(MyContext);
   const [error, setError] = useState()
 
@@ -20,28 +21,37 @@ const FormItem = () => {
     })
   }
 
-  
+  const handleDateChange = (selected) => {
+    const formattedDate = selected.toISOString().split('T')[0];
+    setFormData({ ...formData, date:formattedDate});
+    console.log(formattedDate,selected)
+  };
+
+
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Process the form data here (e.g., send it to the server)
     console.log(formData);
+
     setNote((prevArray) => [...prevArray, formData]);
+    console.log(formData.date,"datee")
   
     // Send to the server-side
+    const timestamp = new Date().toISOString();
+
     try {
       const response = await axios.post('http://localhost:8800/notes/new', formData);
-      console.log(response.data); // Form data received
+      console.log(response.data);
+       // Form data received
     } catch (error) {
       console.error(error);
     }
-  
     setFormData({
       title: '',
       message: ''
     });
   };
-  
 
   return(
     <Form.Root className="FormRoot" onSubmit={handleSubmit}>
@@ -56,6 +66,16 @@ const FormItem = () => {
         <input className="Input" name='title' type="text" required  value={formData.title} onChange={handleInputChange}/>
       </Form.Control>
     </Form.Field>
+
+    <Form.Field className="FormField" name="date">
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+        <Form.Label className="FormLabel">Date:</Form.Label>
+      </div>
+      <Form.Control asChild>
+      <DateInput name="date" onChange={handleDateChange} value={formData.date} selectedDate={props.selected} />
+      </Form.Control>
+    </Form.Field>
+
     <Form.Field className="FormField" name="note">
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
         <Form.Label className="FormLabel"> What is on your mind?</Form.Label>
