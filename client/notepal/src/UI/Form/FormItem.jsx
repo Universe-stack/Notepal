@@ -6,9 +6,10 @@ import axios from "axios";
 import DateInput from '../Datepicker/DatePicker';
 
 
+
 const FormItem = (props) => {
 
-  const [formData, setFormData] = useState({title: "", message:"",date:"", dateSubmit:""});
+  const [formData, setFormData] = useState({title: "", message:"",date:new Date(), dateSubmit:new Date()});
   const {note, setNote} = useContext(MyContext);
   const [error, setError] = useState()
 
@@ -21,24 +22,27 @@ const FormItem = (props) => {
     })
   }
 
-  const handleDateChange = (selected) => {
-    const formattedDate = selected.toISOString().split('T')[0];
-    setFormData({ ...formData, date:formattedDate});
-    console.log(formattedDate,selected)
+  const handleDateChange = (date) => {
+    const timestamp = new Date().toISOString();
+    const formattedDate = date.toISOString().split('T')[0];
+    setFormData({ ...formData, date:formattedDate,dateSubmit:timestamp});
+    console.log(formattedDate,date)
   };
 
-
+  const timestamp = new Date().toISOString();
+  console.log(timestamp)
   
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     // Process the form data here (e.g., send it to the server)
     console.log(formData);
+    await setFormData({ ...formData, dateSubmit:timestamp});
 
-    setNote((prevArray) => [...prevArray, formData]);
+    await setNote((prevArray) => [...prevArray, formData]);
     console.log(formData.date,"datee")
   
     // Send to the server-side
-    const timestamp = new Date().toISOString();
+   
 
     try {
       const response = await axios.post('http://localhost:8800/notes/new', formData);
@@ -72,7 +76,7 @@ const FormItem = (props) => {
         <Form.Label className="FormLabel">Date:</Form.Label>
       </div>
       <Form.Control asChild>
-      <DateInput name="date" onChange={handleDateChange} value={formData.date} selectedDate={props.selected} />
+      <DateInput onChange={handleDateChange} value={formData.date}/>
       </Form.Control>
     </Form.Field>
 
