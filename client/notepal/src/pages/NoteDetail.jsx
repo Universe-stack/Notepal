@@ -5,16 +5,23 @@ import { useLocation } from 'react-router-dom';
 import {BiArrowBack} from "react-icons/bi"
 import{CiBookmark,CiBookmarkPlus,CiBookmarkCheck,CiShare1,CiStop1,CiSquareRemove} from "react-icons/ci"
 import {BiCopyAlt} from "react-icons/bi";
-import moment from "moment"
+import moment from "moment";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Modal from '../UI/Modal/Modal';
 
 
 const NoteDetail = () => {
-    const location = useLocation();
+
+  const [modal, setModal] = useState(false)
+
+  const navigate = useNavigate();
+  const location = useLocation();
      // Extract the ID from the pathname
   const pathname = location.pathname;
   const id = pathname.substring(pathname.lastIndexOf('/') + 1); // Assuming the ID is the part of the pathname following the first character
 
-  const {notes, getNotes,loading,error} = useContext(MyContext);
+  const {notes, getNotes,loading,error,updateNotesAfterDeletion} = useContext(MyContext);
   const filteredNote = notes.filter(note => note._id === id);
  // Extract and calculate hours for each filtered note
  
@@ -38,8 +45,45 @@ const NoteDetail = () => {
     }
  })
 
+//  try {
+//   const response = await axios.post('http://localhost:8800/notes/new', formData);
+//   console.log(response.data);
+//    // Form data received
+// } catch (error) {
+//   console.error(error);
+// }
+// setFormData({
+//   title: '',
+//   message: ''
+// });
+
+const handleDelete=(e)=>{
+  axios.delete(`http://localhost:8800/notes/${id}`)
+  .then(response => {
+    console.log('Post deleted successfully');
+    updateNotesAfterDeletion(id)
+    navigate('/allNotes');
+  })
+  .catch(error => {
+    console.error('Error deleting post:', error);
+  });
+}
+
+const handleUpdate= async (e)=>{
+  e.preventDefault();
+  setModal(true);
+  console.log(modal+"clicked")
+}
+
+  const handleDataFromChild =(modRes)=>{
+  if(modRes){
+      setModal(false)
+    }
+  }
+
   return (
     <div className='NoteDetail'>
+      {<Modal clicked={modal} sendDataToParent={handleDataFromChild}/>}
       <div className='NoteDetail_inner'>
           <div className='NoteDetail_inner_header'>
             <span><h3>{filteredNote.map(item=>item.title)}</h3></span>
@@ -54,8 +98,9 @@ const NoteDetail = () => {
             <span className='button'><button>Go back</button> <BiArrowBack /> </span>
             <div className='options'>
               <span><CiShare1/></span>
-              <span><CiBookmarkPlus/></span>
+              <span onClick={handleUpdate}><CiBookmarkPlus/></span>
               <span><BiCopyAlt/></span>
+              <span onClick={handleDelete}><CiSquareRemove/></span>
             </div>
           </div>
       </div>

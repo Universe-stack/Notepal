@@ -19,7 +19,7 @@ export const createNote = async(req,res,next)=>{
     }
 }
 
-export const updateNote = async(req,res,next)=>{S
+export const updateNote = async(req,res,next)=>{
     try{
         const updatedNote= await Note.findByIdAndUpdate(
             req.params.id,

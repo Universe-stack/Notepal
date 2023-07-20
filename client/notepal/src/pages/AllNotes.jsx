@@ -1,4 +1,4 @@
-import React,{useContext,useState} from 'react';
+import React,{useContext,useState, useEffect} from 'react';
 
 import MyContext  from '../context/StateContext';
 import './AllNotes.css';
@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 
 const AllNotes = () => {
 
-const {notes, getNotes,loading,error} = useContext(MyContext);
+const {notes, getNotes,loading,error,updateNotesAfterDeletion} = useContext(MyContext);
 
 const afterEffects=()=>{
     if(loading){
@@ -22,6 +22,7 @@ const afterEffects=()=>{
       return <p>Please refresh this page!</p>
     }
 }
+
     
   return (
     <div className='AllNotes'>

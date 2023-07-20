@@ -4,14 +4,22 @@ import './FormItem.css';
 import MyContext  from '../../context/StateContext';
 import axios from "axios";
 import DateInput from '../Datepicker/DatePicker';
+import { useLocation } from 'react-router-dom';
+
 
 
 
 const FormItem = (props) => {
 
-  const [formData, setFormData] = useState({title: "", message:"",date:new Date(), dateSubmit:new Date()});
-  const {note, setNote} = useContext(MyContext);
+  const location = useLocation();
+  // Extract the ID from the pathname
+  const pathname = location.pathname;
+  const id = pathname.substring(pathname.lastIndexOf('/') + 1)
+
+  const [formData, setFormData] = useState({updateId:id,title: "", message:"",date:new Date(), dateSubmit:new Date()});
+  const {note, setNote,updateNotesAfterUpdate} = useContext(MyContext);
   const [error, setError] = useState()
+  const [updateFormData, setUpdateFormData]= useState();
 
   const handleInputChange =(e)=>{
     const {name, value} = e.target;
@@ -33,7 +41,7 @@ const FormItem = (props) => {
   console.log(timestamp)
   
   const handleSubmit = async (e) => {
-    //e.preventDefault();
+    e.preventDefault();
     // Process the form data here (e.g., send it to the server)
     console.log(formData);
     await setFormData({ ...formData, dateSubmit:timestamp});
@@ -42,15 +50,22 @@ const FormItem = (props) => {
     console.log(formData.date,"datee")
   
     // Send to the server-side
-   
-
+    let response;
     try {
-      const response = await axios.post('http://localhost:8800/notes/new', formData);
-      console.log(response.data);
+      if (id){
+       response = await axios.put(`http://localhost:8800/notes/${id}`, formData);
+       updateNotesAfterUpdate(response.data);
+       console.log(response.data,"Note updated successfully");
+      }else{
+       response = await axios.post('http://localhost:8800/notes/new', formData);
+       console.log(response.data,"Note added successfully");
+      }
+      
        // Form data received
     } catch (error) {
       console.error(error);
     }
+
     setFormData({
       title: '',
       message: ''

@@ -14,6 +14,25 @@ export const StateContextProvider = ({children}) => {
     setNote(product)
   }
 
+  // Function to update the list of notes after deleting a post
+const updateNotesAfterDeletion = (deletedPostId) => {
+  // Filter out the deleted post from the current notes
+  const updatedNotes = notes.filter((note) => note._id !== deletedPostId);
+  setNotes(updatedNotes);
+};
+
+const updateNotesAfterUpdate = (updatedNote) => {
+   // Find the index of the note to update in the current state
+   const noteIndex = notes.findIndex((note) => note._id === updatedNote._id);
+
+   // If the note exists in the current state, update it
+   if (noteIndex !== -1) {
+     const updatedNotes = [...notes];
+     updatedNotes[noteIndex] = updatedNote;
+     setNotes(updatedNotes);
+   }
+};
+
   const getNotes = async () => {
     // get from the server-side
     try {
@@ -34,8 +53,11 @@ console.log(notes)
 console.log(notes);
 
 
+
+
+
   return (
-    <MyContext.Provider value={{addNote, note, setNote,notes,getNotes,error}}>{children}</MyContext.Provider>
+    <MyContext.Provider value={{addNote, note, setNote,notes,getNotes,error,updateNotesAfterDeletion,updateNotesAfterUpdate}}>{children}</MyContext.Provider>
   )
 }
 

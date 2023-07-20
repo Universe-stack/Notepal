@@ -6,6 +6,8 @@ import { verifyAdmin } from "../utils/verifyToken.js";
 
 const notesRouter = express.Router();
 
+
+//verifyNote
 //try
 notesRouter.get("/try", tryNote)
 
@@ -13,7 +15,7 @@ notesRouter.get("/try", tryNote)
 notesRouter.post("/new", createNote)
 
 //update
-notesRouter.put("/:id",verifyAdmin, updateNote)
+notesRouter.put("/:id", updateNote)
 
 //delete
 notesRouter.delete("/:id", deleteNote)
