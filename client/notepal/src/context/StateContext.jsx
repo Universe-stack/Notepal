@@ -19,7 +19,15 @@ const updateNotesAfterDeletion = (deletedPostId) => {
   // Filter out the deleted post from the current notes
   const updatedNotes = notes.filter((note) => note._id !== deletedPostId);
   setNotes(updatedNotes);
-};
+}
+
+const updateNotesAfterDeletions = (checked)=> {
+  // Remove the notes with IDs present in the 'checked' array
+  const remainingNotes = notes.filter((note) => !checked.includes(note.id));
+  setNotes(remainingNotes);
+  // After removing the deleted notes, you might want to refresh the UI or update any other related components
+  // For example, if you're using React, you can update the state or trigger a re-render.
+}
 
 const updateNotesAfterUpdate = (updatedNote) => {
    // Find the index of the note to update in the current state
@@ -57,7 +65,7 @@ console.log(notes);
 
 
   return (
-    <MyContext.Provider value={{addNote, note, setNote,notes,getNotes,error,updateNotesAfterDeletion,updateNotesAfterUpdate}}>{children}</MyContext.Provider>
+    <MyContext.Provider value={{addNote, note, setNote,notes,getNotes,error,updateNotesAfterDeletion,updateNotesAfterUpdate, updateNotesAfterDeletions}}>{children}</MyContext.Provider>
   )
 }
 

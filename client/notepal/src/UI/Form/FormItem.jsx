@@ -16,7 +16,7 @@ const FormItem = (props) => {
   const pathname = location.pathname;
   const id = pathname.substring(pathname.lastIndexOf('/') + 1)
 
-  const [formData, setFormData] = useState({updateId:id,title: "", message:"",date:new Date(), dateSubmit:new Date()});
+  const [formData, setFormData] = useState({updateId:id,title:`${props.title?props.title:""}`, message:`${props.message?props.message:""}`,date:new Date(), dateSubmit:new Date()});
   const {note, setNote,updateNotesAfterUpdate} = useContext(MyContext);
   const [error, setError] = useState()
   const [updateFormData, setUpdateFormData]= useState();
@@ -60,12 +60,9 @@ const FormItem = (props) => {
        response = await axios.post('http://localhost:8800/notes/new', formData);
        console.log(response.data,"Note added successfully");
       }
-      
-       // Form data received
     } catch (error) {
       console.error(error);
     }
-
     setFormData({
       title: '',
       message: ''

@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { nextTick } from "process";
-import { createNote,deleteNote,getAllNotes,updateNote,tryNote } from "../controllers/note.js";
+import { createNote,deleteNote,getAllNotes,updateNote,tryNote,deleteSelectedNotes } from "../controllers/note.js";
 import Note from "../models/Note.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
@@ -18,6 +18,8 @@ notesRouter.post("/new", createNote)
 notesRouter.put("/:id", updateNote)
 
 //delete
+notesRouter.delete("/checked", deleteSelectedNotes);
+
 notesRouter.delete("/:id", deleteNote)
 
 //get
@@ -31,6 +33,8 @@ notesRouter.get("/:id", async(req,res)=>{
 })
 
 //getAll
-notesRouter.get("/", getAllNotes)
+notesRouter.get("/", getAllNotes);
+
+
 
 export default notesRouter;

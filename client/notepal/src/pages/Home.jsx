@@ -20,7 +20,7 @@ const Home = (props) => {
       setModal(false)
     }
   }
-
+  
   return (
     <div className='Home'>
       {<Modal clicked={modal} sendDataToParent={handleDataFromChild}/>}

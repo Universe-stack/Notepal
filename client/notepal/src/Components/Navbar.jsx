@@ -10,7 +10,7 @@ const Navbar = (props) => {
         <div className='navbar_inner'>
             <div className='n-left'>
               <span className='destopOnly'>
-              <span className="n-logo">LOGO</span>
+              <span className="n-logo">NOTEpal</span>
               </span>
               
               <span className='desktop_only'>

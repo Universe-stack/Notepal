@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect}from 'react';
 import MyContext from '../context/StateContext';
 import './NoteDetail.css';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import {BiArrowBack} from "react-icons/bi"
 import{CiBookmark,CiBookmarkPlus,CiBookmarkCheck,CiShare1,CiStop1,CiSquareRemove} from "react-icons/ci"
 import {BiCopyAlt} from "react-icons/bi";
@@ -9,6 +9,7 @@ import moment from "moment";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../UI/Modal/Modal';
+
 
 
 const NoteDetail = () => {
@@ -45,18 +46,6 @@ const NoteDetail = () => {
     }
  })
 
-//  try {
-//   const response = await axios.post('http://localhost:8800/notes/new', formData);
-//   console.log(response.data);
-//    // Form data received
-// } catch (error) {
-//   console.error(error);
-// }
-// setFormData({
-//   title: '',
-//   message: ''
-// });
-
 const handleDelete=(e)=>{
   axios.delete(`http://localhost:8800/notes/${id}`)
   .then(response => {
@@ -83,7 +72,7 @@ const handleUpdate= async (e)=>{
 
   return (
     <div className='NoteDetail'>
-      {<Modal clicked={modal} sendDataToParent={handleDataFromChild}/>}
+      {<Modal clicked={modal} sendDataToParent={handleDataFromChild} title={filteredNote.map(item=>item.title)} message={filteredNote.map(item=>item.message)}/>}
       <div className='NoteDetail_inner'>
           <div className='NoteDetail_inner_header'>
             <span><h3>{filteredNote.map(item=>item.title)}</h3></span>
@@ -95,7 +84,7 @@ const handleUpdate= async (e)=>{
           </div>
 
           <div className='NoteDetail_inner_header'>
-            <span className='button'><button>Go back</button> <BiArrowBack /> </span>
+            <Link to="/allNotes"><span className='button'><button>Go back</button> <BiArrowBack /> </span></Link>
             <div className='options'>
               <span><CiShare1/></span>
               <span onClick={handleUpdate}><CiBookmarkPlus/></span>

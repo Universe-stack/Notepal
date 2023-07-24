@@ -33,7 +33,7 @@ const Modal = (props) => {
       {show ? <Backdrop /> : null}
       <div className={attachedClasses} closedModal={show}>
         <span className='btn_Close'><button onClick={handleClick}>X</button></span>
-        <FormItem />
+        <FormItem title={props.title} message={props.message}/>
       </div>
     </>
     

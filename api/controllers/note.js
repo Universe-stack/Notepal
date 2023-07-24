@@ -32,6 +32,7 @@ export const updateNote = async(req,res,next)=>{
     }
 }
 
+
 export const deleteNote= async(req,res,next)=>{
     try{
         await Note.findByIdAndDelete(
@@ -53,4 +54,28 @@ export const getAllNotes= async(req,res,next)=>{
     }catch(e){
         next(e)
     }
+}
+
+export const deleteSelectedNotes= async(req,res,next)=>{
+    const { ids } = req.body;
+  // Check if the 'ids' property exists in the request body
+  if (!ids || !Array.isArray(ids)) {
+    return res.status(400).json({ error: 'Invalid request. Please provide an array of IDs to delete.' });
+  }
+
+  try {
+    // Delete the selected notes from the database
+    const deleteResult = await Note.deleteMany({ _id: { $in: ids } });
+
+    if (deleteResult.deletedCount === 0) {
+      return res.status(404).json({ error: 'No notes found with the provided IDs.' });
+    }
+
+    // Return a success response
+    res.json({ message: 'Selected notes deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting notes:', error);
+    res.status(500).json({ error: 'Failed to delete notes.' });
+    next(error)
+  }
 }
