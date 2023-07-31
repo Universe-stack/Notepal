@@ -78,4 +78,19 @@ export const deleteSelectedNotes= async(req,res,next)=>{
     res.status(500).json({ error: 'Failed to delete notes.' });
     next(error)
   }
-}
+} 
+
+export const getPagNotes= async(req, res,next) => {
+    const { page, pageSize } = req.query;
+    const pageNumber = parseInt(page) || 1;
+    const size = parseInt(pageSize) || 10; // Default page size is 10, you can adjust it as needed
+    
+    console.log(page, pageSize);
+    try{
+        const allNotes = await Note.find();
+        res.status(200).json(allNotes);
+    }catch(e){
+        next(e)
+    }
+    
+  }

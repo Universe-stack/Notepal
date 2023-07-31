@@ -1,3 +1,13 @@
+.Notebox-outer{
+    width: 90%;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .Notebox{
     width: 93%;
     padding: 0 1rem;
@@ -11,4 +21,82 @@
     min-height:13rem;
     background-color: rebeccapurple;
     
-}
+}/* Styles for the product box */
+.product-box {
+    background-color:rebeccapurple;
+    color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    max-width: 400px;
+  }
+  
+  /* Styles for the note title */
+  .note-title {
+    margin-bottom: 8px;
+  }
+  
+  /* Styles for the note title span */
+  .note-title span {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* Styles for the note body */
+  .note-body {
+    margin-bottom: 8px;
+  }
+  
+  /* Styles for the note body div */
+  .note-body div {
+    font-size: 14px;
+  }
+/* Basic button styles */
+.pagination-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+    transition: background-color 0.2s, transform 0.2s;
+    margin: 10px 5px;
+  }
+  
+  /* Animation when the button is hovered */
+  .pagination-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  /* Animation when the button is clicked */
+  .pagination-button:active {
+    background-color: #00357a;
+    transform: translateY(2px);
+  }
+  
+  /* Animation when the button is being focused */
+  .pagination-button:focus {
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Custom animation when the button is loading or processing */
+  .pagination-button.loading {
+    animation: loadingAnimation 1.5s infinite;
+  }
+  
+  @keyframes loadingAnimation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  

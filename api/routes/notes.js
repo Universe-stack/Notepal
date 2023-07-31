@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { nextTick } from "process";
-import { createNote,deleteNote,getAllNotes,updateNote,tryNote,deleteSelectedNotes } from "../controllers/note.js";
+import { createNote,deleteNote,getAllNotes,updateNote,tryNote,deleteSelectedNotes,getPagNotes } from "../controllers/note.js";
 import Note from "../models/Note.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
@@ -20,10 +20,13 @@ notesRouter.put("/:id", updateNote)
 //delete
 notesRouter.delete("/checked", deleteSelectedNotes);
 
+//Paginated posts
+notesRouter.get("/allPosts",getPagNotes);
+
 notesRouter.delete("/:id", deleteNote)
 
 //get
-notesRouter.get("/:id", async(req,res)=>{
+notesRouter.get("/:id", async(req,res,next)=>{
     try{
         const singleNote = await Note.findById(req.params.id);
         res.status(200).json(singleNote);
@@ -34,6 +37,8 @@ notesRouter.get("/:id", async(req,res)=>{
 
 //getAll
 notesRouter.get("/", getAllNotes);
+
+
 
 
 

@@ -1,13 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import MyContext from '../context/StateContext';
 import './AllNotes.css';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { AiOutlineMore } from 'react-icons/ai';
 import { BiCheckbox, BiCheckboxChecked, BiTrash } from 'react-icons/bi';
 import DropdownMenuDemo from '../UI/Dropodown/Dropdown.jsx';
 import axios from 'axios'
 
 const AllNotes = (props) => {
+
+  const navigate = useNavigate();
+
   const { notes, getNotes, loading, error, updateNotesAfterDeletion,updateNotesAfterDeletions } = useContext(MyContext);
   const [checked, setChecked] = useState([]);
 
@@ -20,6 +23,10 @@ const AllNotes = (props) => {
       }
     });
   };
+
+  useEffect(() => {
+    console.log("Notes updated:", notes);
+  }, [notes]);
 
   const handleDeleteSelected = async () => {
     // Perform the deletion logic using the checked array to get the IDs of the selected notes
@@ -42,6 +49,8 @@ const AllNotes = (props) => {
           if (response.status === 200) {
             // Deletion was successful, update the notes on the client-side
             updateNotesAfterDeletions(checked);
+            setChecked([]);
+            navigate('/allNotes');
           } else {
             throw new Error('Failed to delete notes');
           }
