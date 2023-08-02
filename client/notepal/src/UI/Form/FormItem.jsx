@@ -1,10 +1,11 @@
-import React,{useState, useContext} from 'react';
+import React,{useState, useContext,useEffect} from 'react';
 import * as Form from '@radix-ui/react-form';
 import './FormItem.css';
 import MyContext  from '../../context/StateContext';
 import axios from "axios";
 import DateInput from '../Datepicker/DatePicker';
 import { useLocation } from 'react-router-dom';
+
 
 
 
@@ -16,10 +17,11 @@ const FormItem = (props) => {
   const pathname = location.pathname;
   const id = pathname.substring(pathname.lastIndexOf('/') + 1)
 
-  const [formData, setFormData] = useState({updateId:id,title:`${props.title?props.title:""}`, message:`${props.message?props.message:""}`,date:new Date(), dateSubmit:new Date()});
+  const [formData, setFormData] = useState({images:null,updateId:id,title:`${props.title?props.title:""}`, message:`${props.message?props.message:""}`,date:new Date(), dateSubmit:new Date()});
   const {note, setNote,updateNotesAfterUpdate} = useContext(MyContext);
   const [error, setError] = useState()
   const [updateFormData, setUpdateFormData]= useState();
+  const [base64Data, setBase64Data] = useState('');
 
   const handleInputChange =(e)=>{
     const {name, value} = e.target;
@@ -37,37 +39,61 @@ const FormItem = (props) => {
     console.log(formattedDate,date)
   };
 
+  useEffect(() => {
+    console.log('Updated formData:', formData);
+  }, [formData]);
+
   const timestamp = new Date().toISOString();
   console.log(timestamp)
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Process the form data here (e.g., send it to the server)
-    console.log(formData);
-    await setFormData({ ...formData, dateSubmit:timestamp});
 
-    await setNote((prevArray) => [...prevArray, formData]);
-    console.log(formData.date,"datee")
-  
+
+  // Handle file change
+const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  console.log(file)
+  if (file) {
+    setFormData({ ...formData, images: file });
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setBase64Data(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+// Handle form submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log("submiteted:",formData)
+
+  const formDataToSend = new FormData();
+  formDataToSend.append("updateId", formData.updateId);
+  formDataToSend.append("title", formData.title);
+  formDataToSend.append("message", formData.message);
+  formDataToSend.append("date", formData.date);
+  formDataToSend.append("dateSubmit", formData.dateSubmit);
+  formDataToSend.append("images", formData.images); // Append the image file directly
+
+  try {
     // Send to the server-side
     let response;
-    try {
-      if (id){
-       response = await axios.put(`http://localhost:8800/notes/${id}`, formData);
-       updateNotesAfterUpdate(response.data);
-       console.log(response.data,"Note updated successfully");
-      }else{
-       response = await axios.post('http://localhost:8800/notes/new', formData);
-       console.log(response.data,"Note added successfully");
-      }
-    } catch (error) {
-      console.error(error);
+    if (id) {
+      response = await axios.put(`http://localhost:8800/notes/${id}`, formData);
+      updateNotesAfterUpdate(response.data);
+      console.log(response.data, "Note updated successfully");
+    } else {
+      response = await axios.post('http://localhost:8800/notes/new', formDataToSend,{
+        headers: { 'Content-Type': 'multipart/form-data' }});
+      console.log(response.data, "Note added successfully");
     }
-    setFormData({
-      title: '',
-      message: ''
-    });
-  };
+  } catch (error) {
+    console.error(error);
+  }
+
+  await setNote((prevArray) => [...prevArray, formData]);
+  await setFormData({ title: '', message: '', dateSubmit: timestamp, images: null });
+};
+
 
   return(
     <Form.Root className="FormRoot" onSubmit={handleSubmit}>
@@ -81,6 +107,23 @@ const FormItem = (props) => {
       <Form.Control asChild>
         <input className="Input" name='title' type="text" required  value={formData.title} onChange={handleInputChange}/>
       </Form.Control>
+
+      <Form.Label className="FormLabel">Upload Picture</Form.Label>
+      <Form.Control asChild>
+        <input className="Input" name='images' type="file"accept="images/*"
+        multiple
+        onChange={handleFileChange}
+        />
+      </Form.Control>
+
+      {formData.images && <p>Selected File: {formData.images.name}</p>}
+      {formData.images && (
+        <img
+          src={base64Data}
+          alt="Selected File"
+          style={{ maxWidth: '300px', maxHeight: '300px' }}
+        />
+      )}
     </Form.Field>
 
     <Form.Field className="FormField" name="date">
@@ -113,3 +156,16 @@ const FormItem = (props) => {
   };
 
 export default FormItem;
+
+// function convertToBase64(file){
+//   return new Promise((resolve,reject)=>{
+//     const fileReader = new FileReader();
+//     fileReader.readAsDataURL(file);
+//     fileReader.onload = ()=> {
+//       resolve(fileReader.result)
+//     };
+//     fileReader.onerror=(error)=> {
+//       reject(error)
+//     }
+//   })
+// }

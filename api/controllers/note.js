@@ -1,5 +1,7 @@
 //The controller takes care of all the logic that is supposed to be in the router requsts-post,put,delete,get
 import Note from "../models/Note.js";
+import path from "path"
+
 
 export const tryNote = async(req,res,next)=> {
     res.send("Thiis is a trial");
@@ -7,15 +9,24 @@ export const tryNote = async(req,res,next)=> {
 }
 
 export const createNote = async(req,res,next)=>{
-    const newNote = new Note(req.body);
+    const uploadedFile = req.file;
+    console.log('Uploaded File:', uploadedFile);
     
     try{
-        const savedNote = newNote.save();
+        const newNote = new Note({
+            title:req.body.title,
+            message: req.body.message,
+            images: uploadedFile.path,
+            ...req.body
+        });
+
+        const savedNote = await newNote.save();
         res.status(200).json(savedNote);
         console.log('Form data received')
 
     }catch(e){
-        next(e)
+        console.error('Error saving note:', e);
+        res.status(500).json({ message: 'Error saving note' });
     }
 }
 

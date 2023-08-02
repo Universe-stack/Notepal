@@ -10,6 +10,7 @@ const Notebox = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(1); // Set the desired page size here
 
+  console.log(notes)
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -44,6 +45,14 @@ const Notebox = () => {
            </div>
            <div className="note-body">
              <div>{note.message}</div>
+           </div>
+           <div className='note-pic'>
+           {note.images && (
+  <img
+    src={`http://localhost:8800/${note.images.replace(/\\/g, '/')}`}
+    alt=""
+  />
+)}
            </div>
          </div>
       ))}

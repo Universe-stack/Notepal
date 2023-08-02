@@ -80,6 +80,7 @@ const handleUpdate= async (e)=>{
           </div>
 
           <div className='NoteDetail_inner_main'>
+          {filteredNote.map(item=>item.image)}
             {filteredNote.map(item=>item.message)}
           </div>
 

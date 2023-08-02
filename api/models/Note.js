@@ -12,7 +12,7 @@ const NoteSchema= new Schema({
         type:String,
     },
     images:{
-        type: [String]
+       type:String
     },
     date: Date,
     dateSubmit: Date

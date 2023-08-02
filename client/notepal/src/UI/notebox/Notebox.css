@@ -5,7 +5,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 
 .Notebox{
@@ -50,6 +49,17 @@
   /* Styles for the note body div */
   .note-body div {
     font-size: 14px;
+  }
+
+  .note-pic{
+    height: 100px;
+    width: 100px;
+  }
+
+  .note-pic img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 /* Basic button styles */
 .pagination-button {

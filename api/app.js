@@ -7,11 +7,21 @@ import notesRoute from "./routes/notes.js";
 import userRoute from "./routes/users.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 
 //call dependencies
 const app = express();
 dotenv.config()
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 
@@ -30,6 +40,8 @@ mongoose.connection.on("disconnected", ()=>{
 mongoose.connection.on("connected", ()=>{
     console.log("mongmongoDB connected")
 })
+
+
 
 //middlewares
 app.use(cors());
