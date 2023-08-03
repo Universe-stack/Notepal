@@ -75,6 +75,7 @@ const AllNotes = (props) => {
         {notes.length ? (
           <>
             {notes.map((item) => (
+              <Link to={`/allNotes/${item._id}`} key={item.id} style={{ textDecoration: 'none', color: 'white' }}>
               <div className='note_item' key={item.id}>
                 <span className='note_item_header'>
                   <span className='note_item_header_left'>
@@ -88,15 +89,27 @@ const AllNotes = (props) => {
                     <DropdownMenuDemo dropdownIcon={<AiOutlineMore />} divId={item._id} />
                   </span>
                 </span>
-                <Link to={`/allNotes/${item._id}`} key={item.id} style={{ textDecoration: 'none', color: 'white' }}>
+                
+                  <span className='span-item'>
                   <div className='note_item_title'>
                     <h3>{item.title}</h3>
                   </div>
                   <div className='note_item_desc'>
                     <p>{item.message}</p>
                   </div>
-                </Link>
+                  <div className='note-pic'>
+                            {item.images && (
+                    <img
+                      src={`http://localhost:8800/${item.images.replace(/\\/g, '/')}`}
+                      alt=""
+                    />
+                  )}
+                  </div>
+                  
+                  </span>
+                
               </div>
+              </Link>
             ))}
            
           </>
