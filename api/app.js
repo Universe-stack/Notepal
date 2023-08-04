@@ -24,7 +24,6 @@ dotenv.config()
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-
 //connect db
 const connect = ()=>{
     try{

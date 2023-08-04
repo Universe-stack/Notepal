@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 const {Schema} = mongoose;
 
-const UserSchema= new Schema({
+
+var User= new Schema({
     username: {
         type:String,
         required:true,
@@ -12,14 +13,13 @@ const UserSchema= new Schema({
         required: true,
         unique:true
     },
-    images:{
-        type: [String]
-    },
     password:{
-        type: String,
-        required:true,
-        unique:true
+        type:String
     },
+    images:{
+        type: String,
+    },
+    facebookId:String,
     isAdmin: {
         type: Boolean,
         default:false
@@ -27,5 +27,4 @@ const UserSchema= new Schema({
 },
     {timestamps:true}
 )
-
-export default mongoose.model("User",UserSchema)
+export default mongoose.model('User',User)
