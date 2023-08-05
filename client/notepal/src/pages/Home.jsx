@@ -5,14 +5,19 @@ import {AiOutlineFileAdd} from "react-icons/ai";
 import Modal from '../UI/Modal/Modal';
 import Notebox from '../UI/notebox/notebox';
 import * as Form from '@radix-ui/react-form';
+import Backdrop from '../UI/Backdrop/Backdrop';
 
 
 
 const Home = (props) => {
 
+  {/** For modal operations */}
   const [modal, setModal] = useState(false);
   const [show, setShow] =useState(false);
   const [loggedIn, setLoggedIn] =useState(false);
+
+  {/** For sending collecting and sending data to the server */}
+  const [formData, setFormData] = useState({username:"",useremail:"", userpassword:""});
 
   const handleOpenModal = () => {
     setModal(true);
@@ -33,6 +38,10 @@ const Home = (props) => {
     setShow(!setShow); // Toggle the state value
   };
 
+  const handleClick=()=>{
+    setShow(false)
+  }
+
   const handleLogin=()=> {
     setShow(true)
   }
@@ -49,6 +58,18 @@ const Home = (props) => {
   let logoutClasses=['buttons','Close'].join(' ');
   if(loggedIn){
       logoutClasses=['buttons','Open'].join(' ');
+  }
+
+  {/** Handling functions for input change */}
+  const handleInputChange =(e)=>{
+    const {name, value} = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+
+    console.log(formData,"this is formdata")
   }
 
   return (
@@ -83,9 +104,11 @@ const Home = (props) => {
                 </div>
               </div>
               {/* This is for the authentication modal */}
+              {show ? <Backdrop /> : null}
               <div className ={attachedClasses}>
+              <span className='btn_Close'><button onClick={handleClick}>X</button></span>
                   <Form.Root className="FormRoot">
-                    <Form.Field className="FormField" name="email">
+                    <Form.Field className="FormField" name="username">
                       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
                         <Form.Label className="FormLabel">Name</Form.Label>
                         <Form.Message className="FormMessage" match="valueMissing">
@@ -93,7 +116,7 @@ const Home = (props) => {
                         </Form.Message>
                       </div>
                       <Form.Control asChild>
-                        <input className="Input" type="email" required />
+                        <input className="Input" type="text" required  name="username" value={formData.username} onChange={handleInputChange}/>
                       </Form.Control>
                     </Form.Field>
                     <Form.Field className="FormField" name="email">
@@ -107,18 +130,18 @@ const Home = (props) => {
                         </Form.Message>
                       </div>
                       <Form.Control asChild>
-                        <input className="Input" type="email" required />
+                        <input className="Input" type="email" required name="useremail" value={formData.useremail} onChange={handleInputChange}/>
                       </Form.Control>
                     </Form.Field>
-                    <Form.Field className="FormField" name="email">
+                    <Form.Field className="FormField" name="password">
                       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-                        <Form.Label className="FormLabel">Email</Form.Label>
+                        <Form.Label className="FormLabel">Password</Form.Label>
                         <Form.Message className="FormMessage" match="valueMissing">
                           Please enter your password
                         </Form.Message>
                       </div>
                       <Form.Control asChild>
-                        <input className="Input" type="email" required />
+                        <input className="Input" type="text" required name="userpassword" value={formData.password} onChange={handleInputChange}/>
                       </Form.Control>
                     </Form.Field>
                     <Form.Submit asChild>
