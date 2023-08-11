@@ -110,7 +110,7 @@ const handleSubmit = async (e) => {
 
       <Form.Label className="FormLabel">Upload Picture</Form.Label>
       <Form.Control asChild>
-        <input className="Input" name='images' type="file"accept="images/*"
+        <input  name='images' type="file"accept="images/*"
         multiple
         onChange={handleFileChange}
         />

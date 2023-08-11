@@ -6,6 +6,7 @@ import Modal from '../UI/Modal/Modal';
 import Notebox from '../UI/notebox/notebox';
 import * as Form from '@radix-ui/react-form';
 import Backdrop from '../UI/Backdrop/Backdrop';
+import axios from "axios";
 
 
 
@@ -34,9 +35,6 @@ const Home = (props) => {
   if(show){
       attachedClasses=['Modal','Open'].join(' ');
   }
-  const handleShow = () => {
-    setShow(!setShow); // Toggle the state value
-  };
 
   const handleClick=()=>{
     setShow(false)
@@ -48,6 +46,40 @@ const Home = (props) => {
 
   const handleLogout=()=> {
   
+  }
+
+  const handleRegister=(e)=> {
+
+    e.preventDefault();
+
+    const requestData = {
+      username: formData.username,
+      email: formData.useremail,
+      isAdmin: true,
+      password: formData.userpassword
+    };
+  
+    // Send the data to the backend using axios
+    axios.post('http://localhost:8800/auth/register', requestData)
+      .then(response => {
+        console.log(response)
+        // Handle successful response here
+      if (response.status === 200) {
+        // You can update the UI or show a success message to the user
+        console.log('Registration was successful!');
+        // Example: Clear the form fields after successful registration
+        setFormData({ username: '', useremail: '', userpassword: '' });
+      } else {
+        console.log('Registration failed:', response.data.message);
+        // Handle the case where the backend indicates a failed registration
+      }
+      })
+      .catch(error => {
+        // Handle errors here
+        console.error('Error during registration:', error);
+        // You can show error messages or handle the error as needed
+      });
+
   }
 
   let loginClasses=['buttons','Open'].join(' ');
@@ -90,6 +122,7 @@ const Home = (props) => {
           </span>
           
           <div className='Logout'>
+            <button onClick={()=>setShow(true)} className="register"><h3>REGISTER</h3></button>
             <button onClick={handleLogin} className={loginClasses}><h3>LOGIN</h3></button> 
             <button onClick={handleLogout}className={logoutClasses}><h3>LOGOUT</h3></button>
           </div>
@@ -107,7 +140,7 @@ const Home = (props) => {
               {show ? <Backdrop /> : null}
               <div className ={attachedClasses}>
               <span className='btn_Close'><button onClick={handleClick}>X</button></span>
-                  <Form.Root className="FormRoot">
+                  <Form.Root className="FormRoot" onSubmit={handleRegister}>
                     <Form.Field className="FormField" name="username">
                       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
                         <Form.Label className="FormLabel">Name</Form.Label>
@@ -151,6 +184,8 @@ const Home = (props) => {
                     </Form.Submit>
                   </Form.Root>
               </div>
+
+              
 
               <div className='view_notes'>
                 <Notebox />
