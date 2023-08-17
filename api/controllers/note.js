@@ -17,6 +17,7 @@ export const createNote = async(req,res,next)=>{
             title:req.body.title,
             message: req.body.message,
             images: uploadedFile.path,
+            author: user._id,
             ...req.body
         });
 
@@ -58,9 +59,10 @@ export const deleteNote= async(req,res,next)=>{
 export const getAllNotes= async(req,res,next)=>{
     //const failed = true;
     //if(failed) return next(createError(401,"You're not authenticated!"))
+    const userId = req.user._id;
 
     try{
-        const allNotes = await Note.find();
+        const allNotes = await Note.find({author:userId}).populate('author');
         res.status(200).json(allNotes);
     }catch(e){
         next(e)

@@ -45,3 +45,26 @@ export const login=async(req,res,next)=>{
         next(e);
     }
 }
+
+//Auth middleware
+export const authenticateJWT = async (req, res, next) => {
+    const authHeader = req.header('Authorization');
+
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Authorization header missing' });
+      }
+    
+      const token = authHeader.split(' ')[1]; // Extract the token after removing "Bearer "
+  
+    if (!token) {
+      return res.status(401).json({ message: 'Authorization token missing' });
+    }
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_KEY); // Replace 'your-secret-key' with your actual secret key
+      req.user = decoded; // This sets the user's information in req.user
+      next();
+    } catch (error) {
+      return res.status(403).json({ message: 'Invalid token' });
+    }
+};

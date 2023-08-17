@@ -4,7 +4,8 @@ import { createNote,deleteNote,getAllNotes,updateNote,tryNote,deleteSelectedNote
 import Note from "../models/Note.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 import multer from "multer";
-import path from "path"
+import path from "path";
+import {authenticateJWT} from '../controllers/auth.js'; // Import your JWT authentication middleware
 
 const notesRouter = express.Router();
 
@@ -36,7 +37,7 @@ notesRouter.put("/:id", updateNote)
 notesRouter.delete("/checked", deleteSelectedNotes);
 
 //Paginated posts
-notesRouter.get("/allPosts",getPagNotes);
+notesRouter.get("/allPosts",authenticateJWT, getPagNotes);
 
 notesRouter.delete("/:id", deleteNote)
 
@@ -51,7 +52,7 @@ notesRouter.get("/:id", async(req,res,next)=>{
 })
 
 //getAll
-notesRouter.get("/", getAllNotes);
+notesRouter.get("/", authenticateJWT, getAllNotes);
 
 
 
