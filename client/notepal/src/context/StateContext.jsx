@@ -36,22 +36,29 @@ const updateNotesAfterUpdate = (updatedNote) => {
    }
 };
 
-  const getNotes = async () => {
-    // get from the server-side
-    try {
-      const response = await axios.get('http://localhost:8800/notes/');
-      setNotes(response.data);
-
-    } catch(error) {
-      setError(error)
-      console.error(error);
-    }
+const getNotes = async () => {
+  const apiUrl = 'http://localhost:8800/notes/';
+  const jwtToken = sessionStorage.getItem('jwtToken');
+  // consider handling token expiration and user logout scenarios by clearing the session storage when the user logs out or when the token expires
+  try {
+    const response = await axios.get(apiUrl, {
+      headers: {
+        'authorization': `Bearer ${jwtToken}`
+      }
+    });
+   
+    setNotes(response.data);
+  } catch (error) {
+    setError(error);
+    console.error(error);
+  }
 };
 
 useEffect(() => {
   getNotes();
 }, []);
-console.log(notes)
+
+console.log(notes);
 
 console.log(notes);
 

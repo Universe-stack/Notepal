@@ -61,24 +61,27 @@ const Home = (props) => {
   
     // Send the data to the backend using axios
     axios.post('http://localhost:8800/auth/register', requestData)
-      .then(response => {
-        console.log(response)
-        // Handle successful response here
-      if (response.status === 200) {
-        // You can update the UI or show a success message to the user
-        console.log('Registration was successful!');
-        // Example: Clear the form fields after successful registration
-        setFormData({ username: '', useremail: '', userpassword: '' });
-      } else {
-        console.log('Registration failed:', response.data.message);
-        // Handle the case where the backend indicates a failed registration
-      }
-      })
-      .catch(error => {
-        // Handle errors here
-        console.error('Error during registration:', error);
-        // You can show error messages or handle the error as needed
-      });
+  .then(response => {
+    console.log(response);
+
+    if (response.status === 201) {
+      const token = response.data.token;
+
+      // Store the token in sessionStorage
+      sessionStorage.setItem('jwtToken', token);
+
+      console.log('Registration was successful!');
+      // Example: Clear the form fields after successful registration
+      setFormData({ username: '', useremail: '', userpassword: '' });
+    } else {
+      console.log('Registration failed:', response.data.message);
+      // Handle the case where the backend indicates a failed registration
+    }
+  })
+  .catch(error => {
+    console.error('Error during registration:', error);
+    // Handle errors here
+  });
 
   }
 
