@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import Navbar from '../Components/Navbar';
 import "./Home.css";
 import {AiOutlineFileAdd} from "react-icons/ai";
@@ -19,6 +19,12 @@ const Home = (props) => {
 
   {/** For sending collecting and sending data to the server */}
   const [formData, setFormData] = useState({username:"",useremail:"", userpassword:""});
+
+  useEffect(() => {
+      // Load the token from storage when the component mounts
+      const token = sessionStorage.getItem('jwtToken');
+      token?setLoggedIn(true):setLoggedIn(false)
+  }, []);
 
   const handleOpenModal = () => {
     setModal(true);
@@ -119,16 +125,24 @@ const Home = (props) => {
             </div>
             <ul>
               <li onClick={handleOpenModal}> ADD NOTE</li>
-              <li><a href='http://localhost:5173/allNotes'>ALL NOTES</a></li>
+              <li><a href='http://localhost:5173/allNote'>ALL NOTES</a></li>
               <li> DELETE ALL</li>
             </ul>
           </span>
-          
+
           <div className='Logout'>
-            <button onClick={()=>setShow(true)} className="register"><h3>REGISTER</h3></button>
-            <button onClick={handleLogin} className={loginClasses}><h3>LOGIN</h3></button> 
-            <button onClick={handleLogout}className={logoutClasses}><h3>LOGOUT</h3></button>
-          </div>
+           
+            <button onClick={handleLogout} className={logoutClasses}>
+              <h3>LOGOUT</h3>
+            </button>
+            <button onClick={() => setShow(true)} className={loginClasses}>
+              <h3>REGISTER</h3>
+            </button>
+            <button onClick={handleLogin} className={loginClasses}>
+                <h3>LOGIN</h3>
+            </button>
+        </div>
+
         </aside>
 
         <main className='Home_inner_main'>

@@ -82,10 +82,17 @@ const handleSubmit = async (e) => {
       updateNotesAfterUpdate(response.data);
       console.log(response.data, "Note updated successfully");
     } else {
-      response = await axios.post('http://localhost:8800/notes/new', formDataToSend,{
-        headers: { 'Content-Type': 'multipart/form-data' }});
-      console.log(response.data, "Note added successfully");
-    }
+
+      const apiUrl = 'http://localhost:8800/notes/new';
+      const jwtToken = sessionStorage.getItem('jwtToken');
+     // consider handling token expiration and user logout scenarios by clearing the session storage when the user logs out or when the token expires
+  
+     response = await axios.post(apiUrl, formDataToSend, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${jwtToken}`
+      }
+    })}
   } catch (error) {
     console.error(error);
   }

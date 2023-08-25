@@ -29,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SharedLayout/>}>
           <Route path="/login" element={<Login/>} />
-          <Route path="/allNotes" element={<AllNotes/>} />
+          <Route path="/allNote" element={<AllNotes/>} />
           <Route index element={<Home />} />
           <Route path='allNotes/:allNotesId' element={<NoteDetail/>}/>
         </Route> 

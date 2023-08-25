@@ -75,7 +75,7 @@ const AllNotes = (props) => {
         {notes.length ? (
           <>
             {notes.map((item) => (
-              <Link to={`/allNotes/${item._id}`} key={item.id} style={{ textDecoration: 'none', color: 'white' }}>
+              <Link to={`/allNote/${item._id}`} key={item.id} style={{ textDecoration: 'none', color: 'white' }}>
               <div className='note_item' key={item.id}>
                 <span className='note_item_header'>
                   <span className='note_item_header_left'>
