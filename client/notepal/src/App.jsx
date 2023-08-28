@@ -8,7 +8,7 @@ import {AuthContext} from "./context/AuthContext";
 
 import Home from './pages/Home';
 import AllNotes from './pages/AllNotes';
-import NoteDetail from './pages/NoteDetail'
+import NoteDetail from './pages/NoteDetail';
 import SharedLayout from './Components/sharedLayout/SharedLayout'
 
 

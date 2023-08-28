@@ -14,8 +14,8 @@ const NoteSchema= new Schema({
     images:{
        type:String
     },
-    date: Date,
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    date: Date,
     dateSubmit: Date
 })
 

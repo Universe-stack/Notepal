@@ -3,7 +3,7 @@ import Navbar from '../Components/Navbar';
 import "./Home.css";
 import {AiOutlineFileAdd} from "react-icons/ai";
 import Modal from '../UI/Modal/Modal';
-import Notebox from '../UI/notebox/notebox';
+import Notebox from '../UI/notebox/Notebox';
 import * as Form from '@radix-ui/react-form';
 import Backdrop from '../UI/Backdrop/Backdrop';
 import axios from "axios";

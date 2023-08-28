@@ -6,8 +6,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-
-
 export const register = async (req, res, next) => {
     try {
         const salt = bcrypt.genSaltSync(10);
@@ -59,24 +57,29 @@ export const login=async(req,res,next)=>{
 
 //Auth middleware
 export const authenticateJWT = async (req, res, next) => {
-    console.log(req.headers,"req")
+    //console.log(req.headers,"req")
     const authHeader = req.headers['authorization']; // Use square brackets to access the header field
   
+    //console.log(authHeader,"authheader");
     if (!authHeader) {
       return res.status(401).json({ message: 'Authorization header missing' });
     }
   
-    const token = authHeader.split(' ')[1]; // Extract the token after removing "Bearer "
+    const token = authHeader.split(' ')[1];
+    console.log(token,"token token")
   
     if (!token) {
       return res.status(401).json({ message: 'Authorization token missing' });
     }
+
+    // console.log(token, process.env.JWT_KEY)
   
     try {
       const decoded = jwt.verify(token, process.env.JWT_KEY); // Replace 'your-secret-key' with your actual secret key
       req.user = decoded; // This sets the user's information in req.user
       next();
     } catch (error) {
+      console.log(error)
       return res.status(403).json({ message: 'Invalid token' });
     }
   };

@@ -3,6 +3,7 @@ import Note from "../models/Note.js";
 import path from "path"
 
 
+
 export const tryNote = async(req,res,next)=> {
     res.send("Thiis is a trial");
     console.log('This is a trial');
@@ -10,20 +11,22 @@ export const tryNote = async(req,res,next)=> {
 
 export const createNote = async(req,res,next)=>{
     const uploadedFile = req.file;
-    console.log('Uploaded File:', uploadedFile);
-    
+    console.log("request",req)
+    const user = req.user.userId;
+        
     try{
         const newNote = new Note({
             title:req.body.title,
             message: req.body.message,
             images: uploadedFile.path,
-            author: user._id,
+            author: user,
             ...req.body
         });
 
+        console.log('newNote', newNote)
         const savedNote = await newNote.save();
         res.status(200).json(savedNote);
-        console.log('Form data received')
+        console.log('Form data received', savedNote)
 
     }catch(e){
         console.error('Error saving note:', e);
@@ -59,11 +62,18 @@ export const deleteNote= async(req,res,next)=>{
 export const getAllNotes= async(req,res,next)=>{
     //const failed = true;
     //if(failed) return next(createError(401,"You're not authenticated!"))
-    const userId = req.user._id;
+    const userId = req.user.userId;
+    console.log(userId, "userID")
 
     try{
-        const allNotes = await Note.find({author:userId}).populate('author');
-        res.status(200).json(allNotes);
+        Note.find({author:userId})
+        .populate('author')
+   .then((note)=> {
+        res.statusCode =200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(note);
+   },(err)=>next(err))
+   .catch((err)=> next(err));
     }catch(e){
         next(e)
     }
@@ -83,7 +93,6 @@ export const deleteSelectedNotes= async(req,res,next)=>{
     if (deleteResult.deletedCount === 0) {
       return res.status(404).json({ error: 'No notes found with the provided IDs.' });
     }
-
     // Return a success response
     res.json({ message: 'Selected notes deleted successfully.' });
   } catch (error) {

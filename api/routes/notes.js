@@ -28,7 +28,7 @@ const upload = multer({storage:storage})
 notesRouter.get("/try", tryNote)
 
 //create
-notesRouter.post("/new",upload.single('images'), express.static('uploads'),createNote)
+notesRouter.post("/new",authenticateJWT,upload.single('images'), express.static('uploads'),createNote)
 
 //update
 notesRouter.put("/:id", updateNote)
