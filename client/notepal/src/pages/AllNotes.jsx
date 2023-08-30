@@ -4,7 +4,7 @@ import './AllNotes.css';
 import { Link,useNavigate } from 'react-router-dom';
 import { AiOutlineMore } from 'react-icons/ai';
 import { BiCheckbox, BiCheckboxChecked, BiTrash } from 'react-icons/bi';
-import DropdownMenuDemo from '../UI/Dropodown/Dropdown.jsx';
+const DropdownMenuDemo = React.lazy(() => import('../UI/Dropodown/Dropdown.jsx'));
 import axios from 'axios'
 
 const AllNotes = (props) => {

@@ -3,7 +3,7 @@ import * as Form from '@radix-ui/react-form';
 import './FormItem.css';
 import MyContext  from '../../context/StateContext';
 import axios from "axios";
-import DateInput from '../Datepicker/DatePicker';
+const DateInput = React.lazy(() => import('../Datepicker/DatePicker'));
 import { useLocation } from 'react-router-dom';
 
 

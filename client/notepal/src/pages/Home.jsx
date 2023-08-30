@@ -1,11 +1,11 @@
 import React,{useState,useEffect} from 'react';
-import Navbar from '../Components/Navbar';
+const Navbar = React.lazy(() => import('../Components/Navbar'));
 import "./Home.css";
 import {AiOutlineFileAdd} from "react-icons/ai";
-import Modal from '../UI/Modal/Modal';
-import Notebox from '../UI/notebox/Notebox';
+const Modal = React.lazy(() => import('../UI/Modal/Modal'));
+const Notebox = React.lazy(() => import('../UI/notebox/Notebox'));
 import * as Form from '@radix-ui/react-form';
-import Backdrop from '../UI/Backdrop/Backdrop';
+const Backdrop = React.lazy(() => import('../UI/Backdrop/Backdrop'));
 import axios from "axios";
 
 

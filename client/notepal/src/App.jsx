@@ -1,4 +1,4 @@
-import { React } from 'react'
+import  React  from 'react'
 import './App.css'
 
 import{Routes,Route, Navigate} from "react-router-dom"
@@ -6,10 +6,12 @@ import Login from './pages/Login'
 import { useContext } from 'react'
 import {AuthContext} from "./context/AuthContext";
 
-import Home from './pages/Home';
-import AllNotes from './pages/AllNotes';
-import NoteDetail from './pages/NoteDetail';
-import SharedLayout from './Components/sharedLayout/SharedLayout'
+
+const Home = React.lazy(() => import('./pages/Home'));
+const AllNotes = React.lazy(() => import('./pages/AllNotes'))
+const NoteDetail = React.lazy(() => import('./pages/NoteDetail'));
+const SharedLayout = React.lazy(() => import('./Components/sharedLayout/SharedLayout'))
+
 
 
 function App() {

@@ -8,7 +8,7 @@ import {BiCopyAlt} from "react-icons/bi";
 import moment from "moment";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../UI/Modal/Modal';
+const Modal = React.lazy(() => import('../UI/Modal/Modal'));
 
 
 
