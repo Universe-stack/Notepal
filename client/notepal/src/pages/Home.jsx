@@ -5,7 +5,7 @@ import {AiOutlineFileAdd} from "react-icons/ai";
 const Modal = React.lazy(() => import('../UI/Modal/Modal'));
 const Notebox = React.lazy(() => import('../UI/notebox/Notebox'));
 import * as Form from '@radix-ui/react-form';
-const Backdrop = React.lazy(() => import('../UI/Backdrop/Backdrop'));
+import Backdrop from '../UI/Backdrop/Backdrop';
 import axios from "axios";
 
 
