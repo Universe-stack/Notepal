@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 const Navbar = React.lazy(() => import('../Components/Navbar'));
 import "./Home.css";
 import {AiOutlineFileAdd} from "react-icons/ai";
@@ -7,15 +7,17 @@ const Notebox = React.lazy(() => import('../UI/notebox/Notebox'));
 import * as Form from '@radix-ui/react-form';
 import Backdrop from '../UI/Backdrop/Backdrop';
 import axios from "axios";
+import { Toaster, toast } from 'react-hot-toast';
 
-
-
+// set up display username
 const Home = (props) => {
 
   {/** For modal operations */}
   const [modal, setModal] = useState(false);
   const [show, setShow] =useState(false);
   const [loggedIn, setLoggedIn] =useState(false);
+  const [loginModal, setLoginModal] = useState(false)
+
 
   {/** For sending collecting and sending data to the server */}
   const [formData, setFormData] = useState({username:"",useremail:"", userpassword:""});
@@ -26,17 +28,38 @@ const Home = (props) => {
       token?setLoggedIn(true):setLoggedIn(false)
   }, []);
 
+  //Aside buttons
   const handleOpenModal = () => {
+    if(loggedIn){
     setModal(true);
     console.log(modal+"clicked")
+    }
+    else{
+      setLoginModal(true);
+      showToast()
+    }
   };
+
+  const showToast = () => {
+    toast.error('Please Sign or Log in!');
+  };
+
+  const handleAllNotes=()=>{
+    !loggedIn?setLoginModal(true):null;
+    showToast()
+  }
+
+  const handleDelete=()=>{
+    !loggedIn?setLoginModal(true):null
+    showToast()
+  }
 
   const handleDataFromChild =(data)=>{
     if(data){
       setModal(false)
     }
   }
-  
+ 
   let attachedClasses=['Modal','Close'].join(' ');
   if(show){
       attachedClasses=['Modal','Open'].join(' ');
@@ -72,11 +95,15 @@ const Home = (props) => {
 
     if (response.status === 201) {
       const token = response.data.token;
-
+      const username = response.data.username
       // Store the token in sessionStorage
       sessionStorage.setItem('jwtToken', token);
+      sessionStorage.setItem('username', username);
 
       console.log('Registration was successful!');
+      
+      console.log("token:",token,username)
+      
       // Example: Clear the form fields after successful registration
       setFormData({ username: '', useremail: '', userpassword: '' });
     } else {
@@ -115,7 +142,9 @@ const Home = (props) => {
 
   return (
     <div className='Home'>
+      <Toaster />
       {<Modal clicked={modal} sendDataToParent={handleDataFromChild}/>}
+      {loginModal?<Backdrop />:null}
       <div className='Home_inner'>
         <aside className='Home_inner_aside'>
           
@@ -125,8 +154,8 @@ const Home = (props) => {
             </div>
             <ul>
               <li onClick={handleOpenModal}> ADD NOTE</li>
-              <li><a href='http://localhost:5173/allNote'>ALL NOTES</a></li>
-              <li> DELETE ALL</li>
+              <li onClick={handleAllNotes}><a href='http://localhost:5173/allNote'>ALL NOTES</a></li>
+              <li onClick={handleDelete}> DELETE ALL</li>
             </ul>
           </span>
 

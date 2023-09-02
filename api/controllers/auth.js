@@ -23,7 +23,7 @@ export const register = async (req, res, next) => {
         const token = jwt.sign({ userId: newUser._id }, process.env.JWT_KEY);
 
         // Send the token to the client
-        res.status(201).json({ token });
+        res.status(201).json({ token,username:req.body.username });
 
         console.log('New user has been created and signed in');
         console.log(token);

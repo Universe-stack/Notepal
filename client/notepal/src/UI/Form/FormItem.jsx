@@ -155,7 +155,7 @@ const handleSubmit = async (e) => {
     </Form.Field>
     <Form.Submit asChild>
       <button className="Button" style={{ marginTop: 10 }} type="submit">
-        Post question
+        Save note
       </button>
     </Form.Submit>
   </Form.Root>

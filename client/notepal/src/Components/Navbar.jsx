@@ -1,10 +1,15 @@
-import React from 'react'
+import React,{useContext,useState,useEffect} from 'react'
 import "./Navbar.css"
 import Navigation from '../UI/Navigation'
 import {MdAccountCircle} from "react-icons/md";
-import {TiThMenu} from 'react-icons/ti'
+import {TiThMenu} from 'react-icons/ti';
+
 
 const Navbar = (props) => {
+
+  const username = sessionStorage.getItem('username');
+  console.log('username',username)
+
   return (
     <div className='navbar'>
         <div className='navbar_inner'>
@@ -26,9 +31,13 @@ const Navbar = (props) => {
             
 
             <span className="n-right">
-                <div className="n-avatar">
+              {username ?
+                (<div className="n-avatar">
                 <MdAccountCircle/>
-                </div>
+                <span>Welcome {username}!</span>
+                </div>): 
+                (<p>Please log in</p>)
+              }
             </span>
         </div>
 

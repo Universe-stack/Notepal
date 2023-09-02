@@ -25,12 +25,23 @@
 }
 
 .n-avatar{
-    width: 20px;
-    height: 20px;
+    display: flex;
+    gap: 20px;
+    flex-direction: reverse;
+    width: 200px;
+    justify-content: flex-end;
+}
+
+.n-avatar>span{
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
 }
 
 .n-avatar>svg{
-    width: 100%;
+    width: 15%;
     height: 100%;
     color: black;
 }

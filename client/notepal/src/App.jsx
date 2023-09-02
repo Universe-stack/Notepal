@@ -33,7 +33,7 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/allNote" element={<AllNotes/>} />
           <Route index element={<Home />} />
-          <Route path='allNotes/:allNotesId' element={<NoteDetail/>}/>
+          <Route path='allNote/:allNotesId' element={<NoteDetail/>}/>
         </Route> 
       </Routes>
   )

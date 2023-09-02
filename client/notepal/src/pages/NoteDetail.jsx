@@ -85,7 +85,7 @@ const handleUpdate= async (e)=>{
           </div>
 
           <div className='NoteDetail_inner_header'>
-            <Link to="/allNotes"><span className='button'><button>Go back</button> <BiArrowBack /> </span></Link>
+            <Link to="/allNote"><span className='button'><button>Go back</button> <BiArrowBack /> </span></Link>
             <div className='options'>
               <span><CiShare1/></span>
               <span onClick={handleUpdate}><CiBookmarkPlus/></span>
